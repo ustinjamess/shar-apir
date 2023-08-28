@@ -1,0 +1,62 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("share a pair [Afk farm, auto throw/break]", "DarkTheme")
+local Tab = Window:NewTab("Farm")
+local Section = Tab:NewSection("AUTO FARM")
+
+local number = 0 
+
+local player = game.Players.LocalPlayer
+local choice = player.PlayerGui.PermUI.choice
+local textInstance = player.PlayerGui.PermUI.choice.header.title
+
+Section:NewTextBox("Number Chances:", "IT WILL ONLY BREAKS ON WHAT NUMBER YOU PUT", function(txt)
+	number = tonumber(txt) or 0 
+	print(number)
+	wait(999)
+end)
+
+Section:NewToggle("Start Auto", "IT WILL START THE AFK FARMIN IDK ", function(state)
+	if state then
+		_G.loop = true
+		while _G.loop do
+			wait()
+
+			if choice.Visible == true and textInstance and textInstance:IsA("TextLabel") then
+				local text = textInstance.Text
+				local numericValue = tonumber(text:match("%d+%.?%d*") or 0)
+				if numericValue >= number then
+					print("breaking")
+					local args = {
+						[1] = "break"
+					}
+
+					game:GetService("ReplicatedStorage"):WaitForChild("Event"):WaitForChild("Follow"):FireServer(unpack(args))
+				else
+					print("throwing")
+					local args = {
+						[1] = "throw"
+					}
+
+					game:GetService("ReplicatedStorage"):WaitForChild("Event"):WaitForChild("Follow"):FireServer(unpack(args))
+				end
+			end
+		end
+	else
+		_G.loop = false
+	end
+end)
+
+Section:NewLabel("Dev Credits to ustinjamesss in YT")
+Section:NewLabel("Kavo UI Library by xHeptc")
+Section:NewButton("JOIN DISCORD (NO IDEA WHY)", "IDK WHY IM LETTING YOU JOIN THIS SERVER ANYWAY HELLO", function()
+    local copy = "https://discord.gg/rHWYtBZRXz" 
+setclipboard(tostring(copy))
+local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+
+Notification:Notify(
+    {Title = "COPIED TO CLIPBOARD", Description = "I dont know you dont need to join the discord but if you feel like you want to alright then"},
+    {OutlineColor = Color3.fromRGB(80, 80, 80),Time = 3, Type = "option"},
+    {Image = "http://www.roblox.com/asset/?id=8846530385", ImageColor = Color3.fromRGB(255, 84, 84), Callback = function(State) print(tostring(State)) end}
+)
+end)
